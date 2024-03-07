@@ -7,6 +7,7 @@ using namespace std;
 //{
 //	//声明友元类
 //	friend class Time;	//声明Time类为Date类的友元类，因此可以在Time类中可以访问Date类的私有成员
+//	//friend void Print();	//声明了友元类，等同于声明了这个类中的所有成员函数
 //	//声明友元函数，作为与友元类对比
 //	friend void func();	//声明func函数为Date类的友元类，因此可以在func函数中访问Date类的私有成员
 //private:
@@ -35,7 +36,7 @@ using namespace std;
 
 
 
-//内部类
+////内部类
 //class A
 //{
 //public:
@@ -94,3 +95,28 @@ int main()
 	//匿名对象一般使用场景是对对象并无创建需求，但是需要一个对象作为媒介来访问类中的函数，那么匿名对象就可以充当这个媒介，进行便捷访问
 	return 0;
 }
+
+//class Date
+//{
+//private:
+//	int _year;
+//public:
+//	Date(int year)
+//	{
+//		_year = year;
+//	}
+//	//重载<<，cout实际上是ostream类的一个对象，所以使用ostream&的方式作为参数
+//	static void operator<<(ostream& out, const Date& d)
+//	{
+//		out << d._year << endl;
+//	}
+//};
+//
+//int main()
+//{
+//	//想要使用cout<<d1这样的方式进行快捷打印d1对象，因此需要对流插入运算符<<进行重载
+//	Date d1(2024);
+//	Date d2(2000);
+//	d1.operator<<(cout, d1);
+//	//cout << d1;
+//}
