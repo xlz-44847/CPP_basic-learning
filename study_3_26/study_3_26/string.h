@@ -31,6 +31,8 @@ namespace m_string	//定义一个新的命名空间，将我们实现的string放在其中，防止和std
 			_capacity = s._capacity;
 			_size = s._size;
 		}
+		//
+
 		//析构函数
 		~string()	//由于_str，所以需要主动实现析构函数
 		{
