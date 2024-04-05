@@ -23,16 +23,21 @@ namespace m_string	//定义一个新的命名空间，将我们实现的string放在其中，防止和std
 		{
 			return _str;
 		}
-		//拷贝构造函数
-		string(const string& s)	//string对象中有_str，需要深拷贝
+		////拷贝构造函数
+		//string(const string& s)	//string对象中有_str，需要深拷贝
+		//{
+		//	_str = new char[s._capacity + 1];
+		//	strcpy(_str, s._str);
+		//	_capacity = s._capacity;
+		//	_size = s._size;
+		//}
+		//拷贝构造函数——函数复用
+		string(const string& s)
 		{
-			_str = new char[s._capacity + 1];
-			strcpy(_str, s._str);
-			_capacity = s._capacity;
-			_size = s._size;
+			string tmp(s._str);
+			swap(tmp);
+			//创建临时变量tmp，交换tmp和*this，这样*this就完成了拷贝，同时出函数后指向空的对象tmp会被销毁
 		}
-		//
-
 		//析构函数
 		~string()	//由于_str，所以需要主动实现析构函数
 		{
@@ -79,18 +84,35 @@ namespace m_string	//定义一个新的命名空间，将我们实现的string放在其中，防止和std
 		{
 			return _str + _size;
 		}
-		//赋值重载函数
-		string& operator=(string& s)
-		{
-			char* tmp = new char[s._capacity + 1];	//使用一个临时字符数组开辟空间，保存待拷贝的字符串
-			strcpy(tmp, s._str);
+		////赋值重载函数
+		//string& operator=(string& s)
+		//{
+		//	char* tmp = new char[s._capacity + 1];	//使用一个临时字符数组开辟空间，保存待拷贝的字符串
+		//	strcpy(tmp, s._str);
 
-			delete[] _str;	//原string对象可能已有值，所以需要先释放空间，然后再把新开辟的带有已有字符串的空间赋值给对象
-			_str = tmp;
-			_size = s._size;
-			_capacity = s._capacity;
-		
+		//	delete[] _str;	//原string对象可能已有值，所以需要先释放空间，然后再把新开辟的带有已有字符串的空间赋值给对象
+		//	_str = tmp;
+		//	_size = s._size;
+		//	_capacity = s._capacity;
+		//
+		//	return *this;
+		//}
+		////赋值重载函数——函数复用1
+		//string& operator=(string& s)
+		//{
+		//	string tmp(s);
+		//	swap(tmp);
+
+		//	return *this;
+		//	//拷贝构造创建临时对象tmp，然后和this交换，this就是和s相同的对象，而tmp在出作用域就销毁
+		//}
+		//赋值重载函数——函数复用2
+		string& operator=(string tmp)
+		{
+			swap(tmp);
+
 			return *this;
+			//函数传参传了对象，所以会默认调用一次拷贝构造构造tmp，然后交换tmp和this，出了函数就会销毁tmp
 		}
 		//reserve(size_t n):重设capacity
 		//	n>capacity:扩容
