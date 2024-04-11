@@ -100,9 +100,41 @@ void test3()
 	cout << endl;
 }
 
+void test4()
+{
+	//对象数组
+	vector<string> vs1;
+	vs1.push_back("sing");
+	vs1.push_back("dance");
+	vector<string>::iterator it = vs1.begin();
+	while (it != vs1.end())
+	{
+		cout << *it << " ";
+		it++;
+	}
+	cout << endl;
+
+	vector<vector<int>> vv2;
+	vector<int> v1(10, 2);
+	vector<int> v2;
+	v2.push_back(11);
+	v2.push_back(12);
+	v2.push_back(13);
+	v2.push_back(14);
+	v2.push_back(15);
+	vv2.push_back(v1);
+	vv2.push_back(v2);
+
+	int arr[][5] = { {1,2,3,4,5},{6,7,8,9,0} };
+
+	cout << vv2[1][2] << endl;	//vv2.operator[](1).operator[](2)
+	cout << arr[1][2] << endl;	//*(*(arr+1)+2)
+}
+
 int main()
 {
 	//test1();
 	//test2();
-	test3();
+	//test3();
+	test4();
 }
