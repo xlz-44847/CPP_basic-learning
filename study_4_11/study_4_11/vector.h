@@ -1,7 +1,9 @@
 #pragma once
 
+#include<iostream>
 #include<assert.h>
 #include<string.h>
+
 
 namespace m_vector	//为自己实现的vector定义一个命名空间
 {
@@ -112,6 +114,62 @@ namespace m_vector	//为自己实现的vector定义一个命名空间
 				_finish = _start + n;
 			}
 		}
+		//push_back：尾插
+		void push_back(const T& val)
+		{
+			//检查扩容
+			if (_finish == _endofstorage)
+			{
+				reserve(capacity() == 0 ? 4 : 2 * capacity());
+			}
+			
+			*_finish = val;
+			++_finish;
+		}
+		//empty：判空
+		bool empty()
+		{
+			return _start == _finish;
+		}
+		//pop_back：尾删
+		void pop_back()
+		{
+			assert(!empty());
+
+			--_finish;
+		}
+		//insert：在pos位置前插入
+		void insert(iterator pos, const T& val)
+		{
+			//检查扩容
+			if (_finish == _endofstorage)
+			{
+				size_t old_len = pos - _start;	//pos是iterator类型参数，所以当扩容后整个数组的地址会发生改变，所以pos的值就失去了意义，因此记录相对位置，并使pos随数组做出修改
+				reserve(capacity() == 0 ? 4 : 2 * capacity());
+				pos = _start + old_len;
+			}
+			iterator it = _finish;
+			while (it != pos)
+			{
+				*it = *(it - 1);
+				--it;
+			}
+			*pos = val;
+			++_finish;
+		}
+		//erase：删除pos位置的值
+		void erase(iterator pos)
+		{
+			assert(pos < _finish && pos >= _start);
+
+			iterator it = pos;
+			while (it != _finish)
+			{
+				*it = *(it + 1);
+				++it;
+			}
+			--_finish;
+		}
 
 	private:	//成员变量都是迭代器变量的形式（指针），尽量贴合库中的形式
 		iterator _start = nullptr;	//vector起始地址
@@ -119,5 +177,81 @@ namespace m_vector	//为自己实现的vector定义一个命名空间
 		iterator _endofstorage = nullptr;	//vector开辟的空间的下一个地址
 		//全部给定缺省值为空指针
 	};
+
+	void Test1()
+	{
+		vector<int> v1;
+		v1.resize(10, 6);
+		for (auto e : v1)
+		{
+			std::cout << e << " ";
+		}
+		std::cout << std::endl;
+		std::cout << v1.size() << std::endl;
+		std::cout << v1.capacity() << std::endl;
+		v1.reserve(20);
+		std::cout << v1.size() << std::endl;
+		std::cout << v1.capacity() << std::endl;
+		v1.resize(5);
+		std::cout << v1.size() << std::endl;
+		std::cout << v1.capacity() << std::endl;
+		for (auto e : v1)
+		{
+			std::cout << e << " ";
+		}
+	}
+	void Test2()
+	{
+		vector<int> v1;
+		v1.push_back(1);
+		v1.push_back(1);
+		v1.push_back(1);
+		v1.push_back(1);
+		v1.push_back(1);
+		v1.push_back(1);
+		vector<int>::iterator it1 = v1.begin();
+		while(it1!=v1.end())
+		{
+			std::cout << *it1 << " ";
+			++it1;
+		}
+		std::cout << std::endl;
+		v1.pop_back();
+		v1.pop_back();
+		vector<int>::iterator it2 = v1.begin();
+		while (it2 != v1.end())
+		{
+			std::cout << *it2 << " ";
+			++it2;
+		}
+		std::cout << std::endl;
+	}
+	void Test3()
+	{
+		vector<int> v1;
+		v1.push_back(0);
+		v1.push_back(0);
+		v1.push_back(0);
+		v1.push_back(0);
+		v1.insert(v1.begin() + 1, 8);
+		v1.insert(v1.begin(), 3);
+		v1.insert(v1.begin() + 2, 99);
+		vector<int>::iterator it1 = v1.begin();
+		while (it1 != v1.end())
+		{
+			std::cout << *it1 << " ";
+			++it1;
+		}
+		std::cout << std::endl;
+		v1.erase(v1.begin() + 2);
+		v1.erase(v1.begin() + 4);
+		vector<int>::iterator it2 = v1.begin();
+		while (it2 != v1.end())
+		{
+			std::cout << *it2 << " ";
+			++it2;
+		}
+		std::cout << std::endl;
+	}
 
 }
