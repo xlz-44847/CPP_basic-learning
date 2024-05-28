@@ -45,7 +45,7 @@ namespace m_list	//为自己实现的list定义命名空间
 		//迭代器追求的是不考虑组织形式，采取一致的格式进行遍历
 		//因此，在list中，要保证*it可以像其他容器一样拿到对应的数据，所以*it应当返回T
 		//对于*it，非const对象拿到的是非const返回值，const对象拿到的是const返回值
-		Ref& operator*()
+		Ref operator*()
 		{
 			return _node->_val;
 		}
